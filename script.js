@@ -56,3 +56,30 @@ document.addEventListener("visibilitychange", () => {
     videos.forEach((video) => video.pause());
   }
 });
+
+
+
+
+
+
+
+  document.querySelectorAll(".video-card video").forEach((video) => {
+    const showPreview = () => {
+      // لا تغيّر التوقيت إذا بدأ المستخدم المشاهدة بالفعل.
+      if (!video.paused || video.currentTime > 0) return;
+
+      const previewTime = Number.isFinite(video.duration)
+        ? Math.min(0.1, video.duration / 2)
+        : 0.1;
+
+      video.currentTime = previewTime;
+    };
+
+    if (video.readyState >= 1) {
+      showPreview();
+    } else {
+      video.addEventListener("loadedmetadata", showPreview, {
+        once: true
+      });
+    }
+  });
